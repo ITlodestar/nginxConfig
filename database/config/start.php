@@ -2,7 +2,7 @@
 require_once('../db.php');
 
 $ip = $_GET["ip"];
-echo $ip;
+// echo $ip;
 // function start($argv)
 // {
 $db = new MyDB();
@@ -38,9 +38,9 @@ $goodCount = 0;
 $out = "";
 
 foreach ($data as $fetch) {
-	var_dump($fetch);
+	// var_dump($fetch);
 	$d = $fetch["name"];
-	echo $d . "testing";
+	// echo $d . "testing";
 
 	// check if domains are pointed to server IP
 
@@ -53,8 +53,10 @@ foreach ($data as $fetch) {
 		//
 		$cmd = "certbot certonly -n --agree-tos --no-redirect --nginx --register-unsafely-without-email -d $d -w /var/www/$d\n";
 		$result = `$cmd`;
+		// Check if /etc/letsencrypt/live/DOMAIN/fullchain.pem and /etc/letsencrypt/live/DOMAIN/privkey.pem exist
+		$exist_pem = file_exists("/etc/letsencrypt/live/DOMAIN/fullchain.pem") && file_exists("/etc/letsencrypt/live/DOMAIN/privkey.pem");
 
-		if (!strstr($result, "fail")) {
+		if (!strstr($result, "fail") && $exist_pem) {
 
 			// add domain config to $vhost
 			//
@@ -66,14 +68,13 @@ foreach ($data as $fetch) {
 			$goodCount++;
 
 			$out .= $d . "\n";
-
+			file_put_contents("/etc/nginx/sites-enabled/$d.conf", $tmpl);
 		}
 
 	} else {
-		echo "Domain is not pointed to $serverIP\n";
+		echo "Domain $d is not pointed to $serverIP\n";
 	}
 }
-
 
 if ($goodCount > 0) {
 	// save nginx config
