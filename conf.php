@@ -60,10 +60,10 @@ if ($pw != "test") {
 
 <body class="p-5 font-base">
     <div class="form-outline w-75 m-auto">
-        <label for="comment">Domains:</label>
+        <label for="domain">Domains:</label>
         <textarea class="form-control" rows="5" id="domain" name="domain">a.com</textarea>
 
-        <label for="comment" class="mt-5">Destination IP:</label>
+        <label for="ip" class="mt-5">Destination IP:</label>
         <input type="text" class="form-control w-25" id="ip" value='123'>
 
         <div class="form-group text-right">
@@ -89,7 +89,7 @@ if ($pw != "test") {
                 domains</button>
         </div>
         <div class="form-group text-right">
-            <button type="button" class="btn btn-warning mt-2">Restart web server</button>
+            <button type="button" class="btn btn-warning mt-2" onclick="restartConfig()">Restart web server</button>
         </div>
         <div id="status" class="form-group text-right">
         </div>
@@ -233,13 +233,23 @@ if ($pw != "test") {
                 url: "database/config/start.php",
                 success: function (data) {
                     console.log(data)
+                    $("#comment").val(data)
+                }
+            })
+        }
+
+        function restartConfig() {
+            $.ajax({
+                type: 'get',
+                url: "database/config/restart.php",
+                success: function (data) {
+                    console.log(data)
                     // var response = JSON.parse(data);
                     // domainList();
                     // alert(response.message);
                 }
             })
         }
-
     </script>
 </body>
 
