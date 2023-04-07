@@ -7,6 +7,7 @@ $pw = $_POST["password"];
 if ($pw != "test") {
     header("Location: index.php?err=yes");
 }
+$cookie_name = "ip";
 ?>
 
 <!DOCTYPE html>
@@ -64,7 +65,8 @@ if ($pw != "test") {
         <textarea class="form-control" rows="5" id="domain" name="domain">a.com</textarea>
 
         <label for="ip" class="mt-5">Destination IP:</label>
-        <input type="text" class="form-control w-25" id="ip" value='123'>
+        <input type="text" class="form-control w-25" id="ip"
+            value='<?php echo !isset($_COOKIE[$cookie_name]) ? "" : $_COOKIE[$cookie_name] ?>'>
 
         <div class="form-group text-right">
             <button type="button" class="btn btn-success mt-4" onclick="addDomain()">Save domains</button>
@@ -74,6 +76,7 @@ if ($pw != "test") {
                 <thead class="thead-light">
                     <tr>
                         <th scope="col">domain name</th>
+                        <th scope="col">ip</th>
                         <th scope="col">status</th>
                         <th scope="col">date added</th>
                         <th scope="col">remove</th>
@@ -85,11 +88,13 @@ if ($pw != "test") {
             <p class="loading">Loading Data</p>
         </div>
         <div class="form-group text-right">
-            <button type="button" class="btn btn-primary mt-4" onclick="startConfig()">Start config generation on new
+            <button type="button" class="btn btn-primary mt-4" id="btn_start" onclick="startConfig()">Start config
+                generation on new
                 domains</button>
         </div>
         <div class="form-group text-right">
-            <button type="button" class="btn btn-warning mt-2" onclick="restartConfig()">Restart web server</button>
+            <button type="button" class="btn btn-warning mt-2" id="btn_restart" onclick="restartConfig()">Restart web
+                server</button>
         </div>
         <div id="status" class="form-group text-right">
         </div>
@@ -110,10 +115,12 @@ if ($pw != "test") {
                     for (var i = 0; i < response.length; i++) {
                         var id = response[i].id;
                         var name = response[i].name;
+                        var ip = response[i].ip;
                         var status = response[i].status;
                         var date = response[i].date;
                         tr += '<tr>';
                         tr += '<td>' + name + '</td>';
+                        tr += '<td>' + ip + '</td>';
                         tr += '<td>' + status + '</td>';
                         tr += '<td>' + date + '</td>';
                         tr += '<td><div class="d-flex">';
@@ -225,6 +232,7 @@ if ($pw != "test") {
 
         function startConfig() {
             const ip = $("#ip").val();
+            $("#btn_start").attr('disabled', 'disabled');
             $.ajax({
                 type: 'get',
                 data: {
@@ -234,6 +242,10 @@ if ($pw != "test") {
                 success: function (data) {
                     console.log(data)
                     $("#comment").val(data)
+                    $('#btn_start').removeAttr('disabled');
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    $('#btn_start').removeAttr('disabled');
                 }
             })
         }

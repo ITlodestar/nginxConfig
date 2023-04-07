@@ -3,7 +3,7 @@ require_once('../db.php');
 
 $db = new MyDB();
 
-$db->exec('CREATE TABLE IF NOT EXISTS domain (id INTEGER PRIMARY KEY, name STRING, status STRING, date STRING);');
+$db->exec('CREATE TABLE IF NOT EXISTS domain (id INTEGER PRIMARY KEY, name STRING UNIQUE, status STRING, date STRING);');
 // $db->exec("INSERT INTO domain (name, status, date) VALUES ('This is a test', '123', '123')");
 
 $sql = "SELECT *  FROM `domain`";
@@ -14,7 +14,9 @@ $result = $db->query($sql);
 // var_dump($result->fetchArray());
 $data = [];
 while ($fetch = $result->fetchArray()) {
+    $fetch["ip"] = gethostbyname($fetch["name"]);
     $data[] = $fetch;
+    // var_dump($fetch);
 }
 print_r(json_encode($data));
 ?>

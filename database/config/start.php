@@ -1,8 +1,11 @@
 <?php
 require_once('../db.php');
 
+
 $ip = $_GET["ip"];
 // echo $ip;
+$cookie_name = "ip";
+setcookie($cookie_name, $ip, time() + (86400 * 100), "/");
 // function start($argv)
 // {
 $db = new MyDB();
@@ -36,6 +39,7 @@ $vhost_header = file_get_contents("../../vhost-header.txt");
 $vhost = str_replace("DESTINATIONIP", $ip, $vhost_header);
 $goodCount = 0;
 $out = "";
+$base = "/var/www/nginxConfig";
 
 foreach ($data as $fetch) {
 	// var_dump($fetch);
@@ -52,7 +56,7 @@ foreach ($data as $fetch) {
 		// generate certificate
 		//
 		// $cmd = "sudo certbot certonly -n --agree-tos --no-redirect --nginx --register-unsafely-without-email -d $d -w /var/www/$d\n";
-		$cmd = "sudo -S /usr/bin/certbot certonly -n --agree-tos --no-redirect --nginx --register-unsafely-without-email -d $d -w /var/www/$d --config-dir /var/www/nginxConfig/certificates --work-dir /var/www/nginxConfig/certificates --logs-dir /var/www/nginxConfig/certificates";
+		$cmd = "sudo -S /usr/bin/certbot certonly -n --agree-tos --no-redirect --nginx --register-unsafely-without-email -d $d -w /var/www/$d --config-dir $base/certificates --work-dir $base/certificates --logs-dir $base/certificates";
 
 		$output = array();
 		$status = -1;
@@ -60,19 +64,8 @@ foreach ($data as $fetch) {
 		// Execute the Certbot command
 		exec($cmd, $output, $status);
 
-		// Check the output and status of the command
-		if ($status == 0) {
-			// echo "Certbot command executed successfully.\n";
-			// echo implode("\n", $output);
-		} else {
-			// echo "Error executing Certbot command.\n";
-			// echo implode("\n", $output);
-		}
-
-		// $result = `$cmd`;
-
-		// Check if /var/www/nginxConfig/certificates/live/servicecuaea.com/fullchain.pem and /var/www/nginxConfig/certificates/servicecuaea.com/fullchain.pem exist
-		$exist_pem = file_exists("/var/www/nginxConfig/certificates/live/$d/fullchain.pem") && file_exists("/var/www/nginxConfig/certificates/live/$d/fullchain.pem");
+		// Check if $base/certificates/live/servicecuaea.com/fullchain.pem and $base/certificates/servicecuaea.com/fullchain.pem exist
+		$exist_pem = file_exists("$base/certificates/live/$d/fullchain.pem") && file_exists("$base/certificates/live/$d/fullchain.pem");
 		$exist_str = $exist_pem ? "exist" : "not exist";
 		if ($status == 0 && $exist_pem) {
 
@@ -86,7 +79,8 @@ foreach ($data as $fetch) {
 			$goodCount++;
 
 			$out .= $d . "\n";
-			file_put_contents("/etc/nginx/sites-enabled/$d.conf", $tmpl);
+			// file_put_contents("/etc/nginx/sites-enabled/$d.conf", $tmpl);
+			file_put_contents("$base/nginx-configs/$d.conf", $tmpl);
 			echo "Domain $d is successful\n" . implode("\n", $output) . "";
 		} else {
 			echo "Domain $d is failed\n$cmd\n$exist_str\n" . implode("\n", $output) . "\n";
