@@ -62,7 +62,7 @@ $cookie_name = "ip";
 <body class="p-5 font-base">
     <div class="form-outline w-75 m-auto">
         <label for="domain">Domains:</label>
-        <textarea class="form-control" rows="5" id="domain" name="domain">a.com</textarea>
+        <textarea class="form-control" rows="5" id="domain" name="domain"></textarea>
 
         <label for="ip" class="mt-5">Destination IP:</label>
         <input type="text" class="form-control w-25" id="ip"
