@@ -7,8 +7,8 @@
 //$restart_result = `sudo -S systemctl restart nginx`;
 //echo $restart_result;
 // echo "restarting nginx<br>\n";
-ob_flush();
-flush();
+// ob_flush();
+// flush();
 
 $output = array();
 $status = -1;
@@ -18,10 +18,10 @@ exec($command, $output, $status);
 
 // Check the output and status of the command
 if ($status === 0) {
-    echo "Nginx restart: command executed successfully.\n";
+    echo "Nginx restart: command executed successfully.\n" . implode("\n", $output);
     echo implode("\n", $output);
 } else {
-    echo "Nginx restart:  executing command failed.\n";
+    echo "Nginx restart:  executing command failed.\n" . implode("\n", $output);
     echo implode("\n", $output);
 }
 
