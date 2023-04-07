@@ -61,7 +61,7 @@ foreach ($data as $fetch) {
 		exec($cmd, $output, $status);
 
 		// Check the output and status of the command
-		if ($status === 0) {
+		if ($status == 0) {
 			// echo "Certbot command executed successfully.\n";
 			// echo implode("\n", $output);
 		} else {
@@ -69,12 +69,12 @@ foreach ($data as $fetch) {
 			// echo implode("\n", $output);
 		}
 
-		$result = `$cmd`;
+		// $result = `$cmd`;
 
 		// Check if /var/www/nginxConfig/certificates/live/servicecuaea.com/fullchain.pem and /var/www/nginxConfig/certificates/servicecuaea.com/fullchain.pem exist
 		$exist_pem = file_exists("/var/www/nginxConfig/certificates/live/$d/fullchain.pem") && file_exists("/var/www/nginxConfig/certificates/live/$d/fullchain.pem");
 		$exist_str = $exist_pem ? "exist" : "not exist";
-		if ($status === 0 && $exist_pem) {
+		if ($status == 0 && $exist_pem) {
 
 			// add domain config to $vhost
 			//
@@ -87,11 +87,9 @@ foreach ($data as $fetch) {
 
 			$out .= $d . "\n";
 			file_put_contents("/etc/nginx/sites-enabled/$d.conf", $tmpl);
-			echo "Domain $d is successful\n";
-			echo implode("\n", $output);
+			echo "Domain $d is successful\n" . implode("\n", $output) . "";
 		} else {
-			echo "Domain $d is failed\n$cmd\n$exist_str\n$result\n";
-			echo implode("\n", $output);
+			echo "Domain $d is failed\n$cmd\n$exist_str\n" . implode("\n", $output) . "\n";
 		}
 	} else {
 		echo "Domain $d is not pointed to $serverIP\n";
