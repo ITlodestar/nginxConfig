@@ -51,15 +51,30 @@ foreach ($data as $fetch) {
 		@mkdir("/var/www/" . $d);
 		// generate certificate
 		//
-		$cmd = "sudo certbot certonly -n --agree-tos --no-redirect --nginx --register-unsafely-without-email -d $d -w /var/www/$d\n";
-		$result1 = `sudo certbot certonly -n --agree-tos --no-redirect --nginx --register-unsafely-without-email -d servicecuaea.com -w /var/www/servicecuaea.com`;
-		exec($cmd . ' 2>&1', $outArr, $rc);
+		// $cmd = "sudo certbot certonly -n --agree-tos --no-redirect --nginx --register-unsafely-without-email -d $d -w /var/www/$d\n";
+		$cmd = "sudo -S /usr/bin/certbot certonly -n --agree-tos --no-redirect --nginx --register-unsafely-without-email -d $d -w /var/www/$d --config-dir /var/www/nginxConfig/certificates --work-dir /var/www/nginxConfig/certificates --logs-dir /var/www/nginxConfig/certificates";
+
+		$output = array();
+		$status = -1;
+
+		// Execute the Certbot command
+		exec($cmd, $output, $status);
+
+		// Check the output and status of the command
+		if ($status === 0) {
+			// echo "Certbot command executed successfully.\n";
+			// echo implode("\n", $output);
+		} else {
+			// echo "Error executing Certbot command.\n";
+			// echo implode("\n", $output);
+		}
+
 		$result = `$cmd`;
 
-		// Check if /etc/letsencrypt/live/DOMAIN/fullchain.pem and /etc/letsencrypt/live/DOMAIN/privkey.pem exist
-		$exist_pem = file_exists("/etc/letsencrypt/live/$d/fullchain.pem") && file_exists("/etc/letsencrypt/live/$d/privkey.pem");
+		// Check if /var/www/nginxConfig/certificates/live/servicecuaea.com/fullchain.pem and /var/www/nginxConfig/certificates/servicecuaea.com/fullchain.pem exist
+		$exist_pem = file_exists("/var/www/nginxConfig/certificates/live/$d/fullchain.pem") && file_exists("/var/www/nginxConfig/certificates/live/$d/fullchain.pem");
 		$exist_str = $exist_pem ? "exist" : "not exist";
-		if (!strstr($result, "fail") && $exist_pem) {
+		if ($status === 0 && $exist_pem) {
 
 			// add domain config to $vhost
 			//
@@ -73,10 +88,10 @@ foreach ($data as $fetch) {
 			$out .= $d . "\n";
 			file_put_contents("/etc/nginx/sites-enabled/$d.conf", $tmpl);
 			echo "Domain $d is successful\n";
+			echo implode("\n", $output);
 		} else {
 			echo "Domain $d is failed\n$cmd\n$exist_str\n$result\n";
-			var_dump($outArr);
-			var_dump($rc);
+			echo implode("\n", $output);
 		}
 	} else {
 		echo "Domain $d is not pointed to $serverIP\n";
