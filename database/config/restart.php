@@ -17,12 +17,11 @@ $command = "sudo -S /usr/bin/systemctl restart nginx";
 exec($command, $output, $status);
 
 // Check the output and status of the command
-if ($status === 0) {
+if ($status == 0) {
     echo "Nginx restart: command executed successfully.\n" . implode("\n", $output);
     echo implode("\n", $output);
 } else {
-    echo "Nginx restart:  executing command failed.\n" . implode("\n", $output);
+    echo "Nginx restart: executing command failed.\n" . implode("\n", $output);
     echo implode("\n", $output);
 }
-
 ?>
