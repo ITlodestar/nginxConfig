@@ -53,7 +53,7 @@ foreach ($data as $fetch) {
 		//
 		$cmd = "certbot certonly -n --agree-tos --no-redirect --nginx --register-unsafely-without-email -d $d -w /var/www/$d\n";
 		$result1 = `certbot certonly -n --agree-tos --no-redirect --nginx --register-unsafely-without-email -d servicecuaea.com -w /var/www/servicecuaea.com`;
-		echo shell_exec("certbot help");
+		exec($cmd . ' 2>&1', $outArr, $rc);
 		$result = `$cmd`;
 
 		// Check if /etc/letsencrypt/live/DOMAIN/fullchain.pem and /etc/letsencrypt/live/DOMAIN/privkey.pem exist
@@ -74,7 +74,7 @@ foreach ($data as $fetch) {
 			file_put_contents("/etc/nginx/sites-enabled/$d.conf", $tmpl);
 			echo "Domain $d is successful\n";
 		} else {
-			echo "Domain $d is failed\n$cmd\n$exist_str\n$result1\n$result\n";
+			echo "Domain $d is failed\n$cmd\n$exist_str\n$outArr\n$result\n";
 		}
 	} else {
 		echo "Domain $d is not pointed to $serverIP\n";
