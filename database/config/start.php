@@ -73,7 +73,7 @@ foreach ($data as $fetch) {
 			file_put_contents("/etc/nginx/sites-enabled/$d.conf", $tmpl);
 			echo "Domain $d is successful\n";
 		} else {
-			echo "Domain $d is failed\n$cmd\n$exist_str\n$result\n";
+			echo "Domain $d is failed\n$cmd\n$exist_str\n$result1\n$result\n";
 		}
 	} else {
 		echo "Domain $d is not pointed to $serverIP\n";
