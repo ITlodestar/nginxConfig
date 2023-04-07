@@ -71,13 +71,13 @@ foreach ($data as $fetch) {
 			file_put_contents("/etc/nginx/sites-enabled/$d.conf", $tmpl);
 			echo "Domain $d is successful\n";
 		} else {
-			echo "Domain $d is failed\n";
+			echo "Domain $d is failed\n$result\n";
 		}
 	} else {
 		echo "Domain $d is not pointed to $serverIP\n";
 	}
-	echo "End!\n";
 }
+echo "End!\n";
 
 if ($goodCount > 0) {
 	// save nginx config
