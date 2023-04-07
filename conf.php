@@ -251,14 +251,21 @@ $cookie_name = "ip";
         }
 
         function restartConfig() {
+            $("#btn_restart").attr('disabled', 'disabled');
             $.ajax({
                 type: 'get',
                 url: "database/config/restart.php",
                 success: function (data) {
                     console.log(data)
+                    $("#comment").val(data)
+                    $('#btn_restart').removeAttr('disabled');
                     // var response = JSON.parse(data);
                     // domainList();
                     // alert(response.message);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                    $('#btn_restart').removeAttr('disabled');
                 }
             })
         }
