@@ -51,8 +51,8 @@ foreach ($data as $fetch) {
 		@mkdir("/var/www/" . $d);
 		// generate certificate
 		//
-		$cmd = "certbot certonly -n --agree-tos --no-redirect --nginx --register-unsafely-without-email -d $d -w /var/www/$d\n";
-		$result1 = `certbot certonly -n --agree-tos --no-redirect --nginx --register-unsafely-without-email -d servicecuaea.com -w /var/www/servicecuaea.com`;
+		$cmd = "sudo certbot certonly -n --agree-tos --no-redirect --nginx --register-unsafely-without-email -d $d -w /var/www/$d\n";
+		$result1 = `sudo certbot certonly -n --agree-tos --no-redirect --nginx --register-unsafely-without-email -d servicecuaea.com -w /var/www/servicecuaea.com`;
 		exec($cmd . ' 2>&1', $outArr, $rc);
 		$result = `$cmd`;
 
@@ -76,6 +76,7 @@ foreach ($data as $fetch) {
 		} else {
 			echo "Domain $d is failed\n$cmd\n$exist_str\n$result\n";
 			var_dump($outArr);
+			var_dump($rc);
 		}
 	} else {
 		echo "Domain $d is not pointed to $serverIP\n";
