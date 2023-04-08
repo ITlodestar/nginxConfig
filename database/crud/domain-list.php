@@ -3,7 +3,7 @@ require_once('../db.php');
 
 $db = new MyDB();
 
-$db->exec('CREATE TABLE IF NOT EXISTS domain (id INTEGER PRIMARY KEY, name STRING, status STRING, date STRING);');
+$db->exec('CREATE TABLE IF NOT EXISTS domain (id INTEGER PRIMARY KEY, name STRING UNIQUE, status STRING, date STRING);');
 // $db->exec("INSERT INTO domain (name, status, date) VALUES ('This is a test', '123', '123')");
 
 $sql = "SELECT *  FROM `domain`";
