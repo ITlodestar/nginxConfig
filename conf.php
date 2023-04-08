@@ -62,10 +62,10 @@ $cookie_name = "ip";
 <body class="p-5 font-base">
     <div class="form-outline w-75 m-auto">
         <label for="domain">Domains:</label>
-        <textarea class="form-control" rows="5" id="domain" name="domain"></textarea>
+        <textarea class="form-control" rows="5" id="domain" name="domain" required></textarea>
 
         <label for="ip" class="mt-5">Destination IP:</label>
-        <input type="text" class="form-control w-25" id="ip"
+        <input type="text" class="form-control w-25" id="ip" required
             value='<?php echo !isset($_COOKIE[$cookie_name]) ? "" : $_COOKIE[$cookie_name] ?>'>
 
         <div class="form-group text-right">
@@ -119,7 +119,7 @@ $cookie_name = "ip";
                         var status = response[i].status;
                         var date = response[i].date;
                         tr += '<tr>';
-                        tr += '<td>' + name + '</td>';
+                        tr += '<td><a href="' + name + '">' + name + '</td>';
                         tr += '<td>' + ip + '</td>';
                         tr += '<td>' + status + '</td>';
                         tr += '<td>' + date + '</td>';
@@ -139,6 +139,9 @@ $cookie_name = "ip";
         function addDomain() {
             var lines = $('#domain').val().split('\n');
             var ip = $('#ip').val();
+            if (lines.length == 0 || ip == "") {
+                alert("Domains and Destination IP can not be empty.");
+            }
 
             console.log(lines)
             console.log(ip)
@@ -243,6 +246,13 @@ $cookie_name = "ip";
                     console.log(data)
                     $("#comment").val(data)
                     $('#btn_start').removeAttr('disabled');
+                    $('#domain_data tr').map(tr => {
+                        console.log(tr);
+                        const domain_name = $(tr "td::first").val()
+                        if (!data.includes(`${domain_name} is successful`)) {
+                            $(tr).css("background-color", "green")
+                        }
+                    })
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     $('#btn_start').removeAttr('disabled');
