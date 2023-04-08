@@ -1,8 +1,14 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once('../db.php');
 
+$_GET['ip'] = "1.1.1.1";
 
 $ip = $_GET["ip"];
+
 // echo $ip;
 $cookie_name = "ip";
 setcookie($cookie_name, $ip, time() + (86400 * 100), "/");
@@ -10,10 +16,10 @@ setcookie($cookie_name, $ip, time() + (86400 * 100), "/");
 // {
 $db = new MyDB();
 
-// $db->exec('CREATE TABLE IF NOT EXISTS domain (id INTEGER PRIMARY KEY, name STRING, status STRING, date STRING);');
+$db->exec('CREATE TABLE IF NOT EXISTS domain (id INTEGER PRIMARY KEY, name STRING, status STRING, date STRING);');
 // $db->exec("INSERT INTO domain (name, status, date) VALUES ('This is a test', '123', '123')");
 
-$sql = "SELECT *  FROM `domain`";
+$sql = "SELECT * FROM `domain`";
 // $db->exec("INSERT INTO domain (bar) VALUES ('This is a test')");
 
 $result = $db->query($sql);
@@ -52,11 +58,12 @@ foreach ($data as $fetch) {
 
 	if (gethostbyname($d) == $serverIP) {
 
-		@mkdir("/var/www/" . $d);
+		//@mkdir("/var/www/" . $d);
 		// generate certificate
 		//
 		// $cmd = "sudo certbot certonly -n --agree-tos --no-redirect --nginx --register-unsafely-without-email -d $d -w /var/www/$d\n";
-		$cmd = "sudo -S /usr/bin/certbot certonly -n --agree-tos --no-redirect --nginx --register-unsafely-without-email -d $d -w /var/www/$d --config-dir $base/certificates --work-dir $base/certificates --logs-dir $base/certificates";
+		//$cmd = "sudo -S /usr/bin/certbot certonly -n --agree-tos --no-redirect --nginx --register-unsafely-without-email -d $d -w /var/www/$d --config-dir $base/certificates --work-dir $base/certificates --logs-dir $base/certificates";
+		$cmd = "sudo -S /usr/bin/certbot certonly -n --agree-tos --no-redirect --nginx --register-unsafely-without-email -d $d -w /var/www/ --config-dir $base/certificates --work-dir $base/certificates --logs-dir $base/certificates";
 
 		$output = array();
 		$status = -1;
@@ -65,13 +72,19 @@ foreach ($data as $fetch) {
 		exec($cmd, $output, $status);
 
 		// Check if $base/certificates/live/servicecuaea.com/fullchain.pem and $base/certificates/servicecuaea.com/fullchain.pem exist
-		$exist_pem = file_exists("$base/certificates/live/$d/fullchain.pem") && file_exists("$base/certificates/live/$d/fullchain.pem");
-		$exist_str = $exist_pem ? "exist" : "not exist";
-		if ($status == 0 && $exist_pem) {
+		// /var/www/nginxConfig/certificates/live/globalthanakha.com/fullchain.pem
+		$f1 = "$base/certificates/live/$d/fullchain.pem";
+		$f2 = "$base/certificates/live/$d/privkey.pem";
+		$exist_pem = is_link($f1) && is_link($f2);
+		$exist_str = $exist_pem ? "exist" : "not exist\n$f1\n$f2";
+		
+		echo "\nstatus: $status exists: ". var_export($exist_pem, true) . "\n";
+		
+		if ($status != -1 && $exist_pem) {
 
 			// add domain config to $vhost
 			//
-			$tmpl = file_get_contents("/vhost-template.txt");
+			$tmpl = file_get_contents("$base/vhost-template.txt");
 			$tmpl = str_replace("DOMAIN", $d, $tmpl);
 			$tmpl = str_replace("DESTINATIONIP", $ip, $tmpl);
 
@@ -80,7 +93,9 @@ foreach ($data as $fetch) {
 
 			$out .= $d . "\n";
 			// file_put_contents("/etc/nginx/sites-enabled/$d.conf", $tmpl);
-			file_put_contents("$base/nginx-configs/$d.conf", $tmpl);
+			$tmpl_file = "$base/nginx-configs/$d.conf";
+			file_put_contents($tmpl_file, $tmpl);
+			echo $tmpl_file. "\n";
 			echo "Domain $d is successful\n" . implode("\n", $output) . "";
 		} else {
 			echo "Domain $d is failed\n$cmd\n$exist_str\n" . implode("\n", $output) . "\n";
@@ -93,11 +108,19 @@ echo "End!\n";
 
 if ($goodCount > 0) {
 	// save nginx config
-	file_put_contents($nginx_path, $vhost);
-
+	//file_put_contents($nginx_path, $vhost);
+	echo "Testing configuration\n";
 	// test & restart nginx
-	$test_result = `nginx -t`;
-	echo $test_result;
+	//$test_result = `sudo -S /usr/sbin/nginx -t`;
+	//echo $test_result;
+	
+	$cmd = "sudo -S /usr/sbin/nginx -t 2>&1";
+	$output = array();
+	$status = -1;
+
+// Execute the Certbot command
+	exec($cmd, $output, $status);
+	echo implode("\n", $output) . " " . $status;
 	// `systemctl restart nginx`;
 }
 ?>
