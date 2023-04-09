@@ -250,8 +250,8 @@ $cookie_name = "ip";
                     $('#domain_data tr').map((index, tr) => {
                         console.log(tr);
                         const domain_name = $(tr).find("td:first-child").val()
-                        if (!data.includes(`${domain_name} is successful`)) {
-                            $(tr).css("background-color", "green")
+                        if (data.includes(`${domain_name} is successful`)) {
+                            $(tr).css("background-color", "lightgreen")
                         }
                     })
                 },
