@@ -139,8 +139,9 @@ $cookie_name = "ip";
         function addDomain() {
             var lines = $('#domain').val().split('\n');
             var ip = $('#ip').val();
-            if (lines.length == 0 || ip == "") {
+            if (lines.length == 1 && lines[0] == '' || ip == "") {
                 alert("Domains and Destination IP can not be empty.");
+                return
             }
 
             console.log(lines)
