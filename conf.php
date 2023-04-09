@@ -247,7 +247,7 @@ $cookie_name = "ip";
                     console.log(data)
                     $("#comment").val(data)
                     $('#btn_start').removeAttr('disabled');
-                    $('#domain_data tr').map(tr => {
+                    $('#domain_data tr').map((index, tr) => {
                         console.log(tr);
                         const domain_name = $(tr).find("td:first-child").val()
                         if (!data.includes(`${domain_name} is successful`)) {
