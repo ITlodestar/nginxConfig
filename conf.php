@@ -119,7 +119,7 @@ $cookie_name = "ip";
                         var status = response[i].status;
                         var date = response[i].date;
                         tr += '<tr>';
-                        tr += '<td><a href="https://' + name + '">' + name + '</td>';
+                        tr += '<td><a href="https://' + name + '" target="_blank">' + name + '</td>';
                         tr += '<td>' + ip + '</td>';
                         tr += '<td>' + status + '</td>';
                         tr += '<td>' + date + '</td>';
