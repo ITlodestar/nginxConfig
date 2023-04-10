@@ -9,7 +9,11 @@ $date = date("Y/m/d");
 $result = true;
 foreach ($names as &$name) {
     $sql = "INSERT INTO domain (name, status, date) VALUES ('$name', '$status', '$date');";
-    $result = $result && $db->exec($sql);
+    try {
+        $result = $result && $db->exec($sql);
+    } catch (Exception $e) {
+
+    }
     // var_dump($name);
 }
 // exit;
