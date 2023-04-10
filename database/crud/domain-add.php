@@ -10,6 +10,7 @@ $result = true;
 foreach ($names as &$name) {
     $sql = "INSERT INTO domain (name, status, date) VALUES ('$name', '$status', '$date');";
     try {
+        $db = new MyDB();
         $result = $result && $db->exec($sql);
     } catch (Exception $e) {
 
