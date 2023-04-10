@@ -132,6 +132,7 @@ $cookie_name = "ip";
                     $('.loading').hide();
                     $('#domain_data').html('');
                     $('#domain_data').html(tr);
+                    startConfig();
                 }
             });
         }
@@ -163,7 +164,6 @@ $cookie_name = "ip";
                     domainList();
                     // alert(response.message);
                 }
-
             })
             // })
         }
