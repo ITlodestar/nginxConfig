@@ -11,7 +11,7 @@ foreach ($names as &$name) {
     $count_sql = "SELECT COUNT(*) AS NUM_ROW FROM domain WHERE NAME='$name'";
     $count = $db->query($sql);
     var_dump($count);
-    if ($count != "0" && $count > 0) {
+    if ($count == "0" || $count < 1) {
         $sql = "INSERT INTO domain (name, status, date) VALUES ('$name', '$status', '$date');";
         try {
             $db = new MyDB();
