@@ -8,12 +8,17 @@ $status = $_POST['status'];
 $date = date("Y/m/d");
 $result = true;
 foreach ($names as &$name) {
-    $sql = "INSERT INTO domain (name, status, date) VALUES ('$name', '$status', '$date');";
-    try {
-        $db = new MyDB();
-        $result = $result && $db->exec($sql);
-    } catch (Exception $e) {
+    $count_sql = "SELECT COUNT(*) AS NUM_ROW FROM domain WHERE NAME='$name'";
+    $count = $db->query($sql);
+    var_dump($count);
+    if ($count != "0" && $count > 0) {
+        $sql = "INSERT INTO domain (name, status, date) VALUES ('$name', '$status', '$date');";
+        try {
+            $db = new MyDB();
+            $result = $result && $db->exec($sql);
+        } catch (Exception $e) {
 
+        }
     }
     // var_dump($name);
 }
