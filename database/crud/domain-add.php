@@ -8,10 +8,8 @@ $status = $_POST['status'];
 $date = date("Y/m/d");
 $result = true;
 foreach ($names as &$name) {
-    $sql = "IF NOT EXISTS(SELECT COUNT(*) AS NUM_ROW FROM domain WHERE NAME='$name')
-    BEGIN 
-    INSERT INTO domain (name, status, date) VALUES ('$name', '$status', '$date');
-    END";
+    $sql = "INSERT INTO domain (name, status, date)
+    SELECT '$name', '$status', '$date' WHERE NOT EXISTS(SELECT * FROM domain WHERE NAME='$name')";
     // $sql = "INSERT INTO domain (name, status, date) VALUES ('$name', '$status', '$date');";
     try {
         $db = new MyDB();
@@ -19,7 +17,6 @@ foreach ($names as &$name) {
     } catch (Exception $e) {
 
     }
-    echo $sql;
     // var_dump($name);
 }
 // exit;
