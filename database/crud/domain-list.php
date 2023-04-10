@@ -3,10 +3,10 @@ require_once('../db.php');
 
 $db = new MyDB();
 
-$db->exec('CREATE TABLE IF NOT EXISTS domain (id INTEGER PRIMARY KEY, name STRING, status STRING, date STRING);');
+$db->exec('CREATE TABLE IF NOT EXISTS domain (id INTEGER, name TEXT UNIQUE, status TEXT, date TEXT, PRIMARY KEY("id" AUTOINCREMENT));');
 // $db->exec("INSERT INTO domain (name, status, date) VALUES ('This is a test', '123', '123')");
 
-$sql = "SELECT *  FROM `domain`";
+$sql = "SELECT * FROM `domain`";
 // $db->exec("INSERT INTO domain (bar) VALUES ('This is a test')");
 
 $result = $db->query($sql);

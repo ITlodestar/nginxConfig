@@ -250,7 +250,7 @@ $cookie_name = "ip";
                     $('#btn_start').removeAttr('disabled');
                     $('#domain_data tr').map((index, tr) => {
                         console.log(tr);
-                        const domain_name = $(tr).find("td:first-child").val()
+                        const domain_name = $(tr).find("td:first-child a").get(0)?.innerHTML ?? "Nope"
                         if (data.includes(`${domain_name} is successful`)) {
                             $(tr).css("background-color", "lightgreen")
                         }
