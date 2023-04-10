@@ -2,7 +2,7 @@
 require_once('../db.php');
 
 $db = new MyDB();
-
+// var_dump($db);
 $names = $_POST['names'];
 $status = $_POST['status'];
 $date = date("Y/m/d");
@@ -20,7 +20,7 @@ if ($result) {
     $response = [
         'status' => 'ok',
         'success' => true,
-        'message' => 'Record created succesfully!'
+        'message' => 'Record created successfully!'
     ];
     print_r(json_encode($response));
 } else {
