@@ -119,7 +119,7 @@ $cookie_name = "ip";
                         var status = response[i].status;
                         var date = response[i].date;
                         tr += '<tr>';
-                        tr += '<td><a href="' + name + '">' + name + '</td>';
+                        tr += '<td><a href="https://' + name + '">' + name + '</td>';
                         tr += '<td>' + ip + '</td>';
                         tr += '<td>' + status + '</td>';
                         tr += '<td>' + date + '</td>';
@@ -137,9 +137,10 @@ $cookie_name = "ip";
         }
 
         function addDomain() {
-            var lines = $('#domain').val().split('\n').filter(line => Boolean(line).map(line => line.trim()));
+            var lines = $('#domain').val().split('\n').map(line => line.trim()).filter(line => Boolean(line));
+            console.log(lines)
             var ip = $('#ip').val();
-            if (lines.length == 1 && lines[0] == '' || ip == "") {
+            if (lines.length < 1 || ip == "") {
                 alert("Domains and Destination IP can not be empty.");
                 return
             }
