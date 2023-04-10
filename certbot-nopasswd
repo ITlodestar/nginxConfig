@@ -1,0 +1,4 @@
+www-data ALL = NOPASSWD: /usr/bin/certbot
+www-data ALL = NOPASSWD: /usr/bin/systemctl restart nginx
+www-data ALL = NOPASSWD: /usr/sbin/nginx -t
+www-data ALL = NOPASSWD: /usr/bin/systemctl status nginx
