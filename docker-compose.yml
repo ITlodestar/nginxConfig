@@ -1,9 +1,16 @@
-version: "3"
+version: '3.9'
+
 services:
-  nginx:
-    image: nginx
+  web:
+    image: nginx:latest
     ports:
-      - "80:80"
+      - '80:80'
     volumes:
-      - ./certificates:/etc/nginx/certificates
-    command: nginx -g "daemon off;"
+      - ./src:/var/www/html
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+    links:
+      - php-fpm
+  php-fpm:
+    image: php:8-fpm
+    volumes:
+      - ./src:/var/www/html
