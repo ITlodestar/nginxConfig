@@ -8,6 +8,8 @@ RUN chown -R www-data:www-data /var/www
 
 WORKDIR /var/www/html
 
+RUN chmod 777 /var/www/html/
+
 RUN chown -R www-data:www-data /var/www/html/certificates && \
     chown -R www-data:www-data /var/www/html/nginx-configs 
 RUN apk add php8-sqlite3
