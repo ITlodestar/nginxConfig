@@ -14,5 +14,7 @@ services:
     image: php:8-fpm
     volumes:
       - ./src:/var/www/html
-  sqlite:
-    image: "keinos/sqlite3:3.38.5"
+  sqlite3:
+    image: nouchka/sqlite3:latest
+    stdin_open: true
+    tty: true
