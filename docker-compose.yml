@@ -17,6 +17,5 @@ services:
   php-fpm:
     image: php:8-fpm
     volumes:
-      - ./php.ini:/etc/php/8/fpm/php.ini
-      - ./php.ini:/usr/local/etc/php/conf.d/custom.ini
-      - ./src:/var/www/html
+      # - ./php.ini:/etc/php/8/fpm/php.ini
+      # - ./php.ini:/usr/local/etc/php/conf.d/custom.ini
