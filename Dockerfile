@@ -2,9 +2,10 @@ FROM php:8.0-fpm
 
 RUN apt-get update && apt-get install -y \
     libsqlite3-dev \
+    sqlite3 && \
     && docker-php-ext-install pdo_sqlite
 
-RUN chown -R www-data:www-data /var/www/html
+RUN chown -R www-data:www-data /var/www
 
 RUN chmod 777 /var/www/html/
 
