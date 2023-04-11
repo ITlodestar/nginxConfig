@@ -3,7 +3,10 @@
 // require_once('start.php');
 
 // start('1.1.1.1');
-$pw = $_POST["password"];
+$pw = '';
+if (isset($_POST['password'])) {
+    $pw = $_POST["password"];
+}
 if ($pw != "test") {
     header("Location: index.php?err=yes");
 }
