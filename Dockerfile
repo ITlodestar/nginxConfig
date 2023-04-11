@@ -16,7 +16,7 @@ RUN chown -R www-data:www-data /var/www/html/certificates && \
     chown -R www-data:www-data /var/www/html/nginx-configs
 RUN apt-get install php-sqlite3
 
-COPY php.ini /usr/local/etc/php/conf.d/custom.ini
+# COPY php.ini /usr/local/etc/php/conf.d/custom.ini
 
 
 
