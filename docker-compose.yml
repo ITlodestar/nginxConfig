@@ -19,3 +19,4 @@ services:
     volumes:
       # - ./php.ini:/etc/php/8/fpm/php.ini
       # - ./php.ini:/usr/local/etc/php/conf.d/custom.ini
+      - ./src:/var/www/html
