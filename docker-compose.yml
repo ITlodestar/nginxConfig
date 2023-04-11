@@ -1,6 +1,10 @@
 version: "3.9"
 
 services:
+  # sqlite3:
+  #   image: nouchka/sqlite3:latest
+  #   stdin_open: true
+  #   tty: true
   web:
     image: nginx:latest
     ports:
@@ -13,8 +17,6 @@ services:
   php-fpm:
     image: php:8-fpm
     volumes:
+      - ./php.ini:/etc/php/8/fpm/php.ini
+      - ./php.ini:/usr/local/etc/php/conf.d/custom.ini
       - ./src:/var/www/html
-  sqlite3:
-    image: nouchka/sqlite3:latest
-    stdin_open: true
-    tty: true
