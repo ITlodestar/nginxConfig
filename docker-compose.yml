@@ -1,10 +1,10 @@
-version: '3.9'
+version: "3.9"
 
 services:
   web:
     image: nginx:latest
     ports:
-      - '80:80'
+      - "80:80"
     volumes:
       - ./src:/var/www/html
       - ./default.conf:/etc/nginx/conf.d/default.conf
@@ -14,3 +14,5 @@ services:
     image: php:8-fpm
     volumes:
       - ./src:/var/www/html
+  sqlite:
+    image: "keinos/sqlite3:3.38.5"
