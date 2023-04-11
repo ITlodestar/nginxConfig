@@ -4,11 +4,7 @@ RUN apt-get update && apt-get install -y \
     libsqlite3-dev \
     && docker-php-ext-install pdo_sqlite
 
-RUN apt-get update \
-    && apt-get install -y nginx sqlite3 libsqlite3-dev \
-    && docker-php-ext-install pdo_sqlite
-
-RUN chown -R www-data:www-data /var/www
+RUN chown -R www-data:www-data /var/www/html
 
 RUN chmod 777 /var/www/html/
 
