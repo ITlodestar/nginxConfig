@@ -5,6 +5,8 @@ RUN apt install sqlite3 && \
     sudo chmod -R u+w /var/www/html
 RUN sudo chown www-data:www-data /var/www/html/certificates -R && \
     sudo chown www-data:www-data /var/www/html/nginx-configs -R 
+RUN apk add php8-sqlite3
+RUN apt add php8-sqlite3
 RUN apt-get update && apt-get install -y \
     libsqlite3-dev \
     && docker-php-ext-install pdo_sqlite
