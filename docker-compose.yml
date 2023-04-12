@@ -16,8 +16,8 @@ services:
       - php-fpm
   php-fpm:
     image: php:8-fpm
-    command: chown -R www-data:www-data /var/www && chmod 777 /var/www/html
+    # command: sudo chown -R www-data:www-data /var/www/html
     volumes:
       # - ./php.ini:/etc/php/8/fpm/php.ini
-      - ./php.ini:/usr/local/etc/php/conf.d/custom.ini
+      # - ./php.ini:/usr/local/etc/php/conf.d/custom.ini
       - ./src:/var/www/html
